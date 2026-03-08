@@ -19,7 +19,7 @@ overflow:hidden;
 color:white;
 }
 
-/* Stars */
+/* Stars background */
 
 .stars{
 position:absolute;
@@ -35,6 +35,8 @@ animation:moveStars 60s linear infinite;
 from{transform:translateY(0)}
 to{transform:translateY(-200px)}
 }
+
+/* Main card */
 
 .container{
 max-width:700px;
@@ -57,6 +59,8 @@ line-height:1.6;
 min-height:90px;
 }
 
+/* Buttons */
+
 button{
 padding:12px 28px;
 border:none;
@@ -77,6 +81,8 @@ transform:scale(1.1);
 position:relative;
 }
 
+/* Floating hearts */
+
 .spark{
 position:absolute;
 font-size:22px;
@@ -88,7 +94,7 @@ animation:floatUp 5s linear forwards;
 100%{transform:translateY(-700px);opacity:0}
 }
 
-/* Castle Gate */
+/* Intro screen */
 
 #intro{
 position:absolute;
@@ -109,6 +115,21 @@ font-size:60px;
 margin-bottom:20px;
 }
 
+/* Music button */
+
+#musicBtn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#ff4d9a;
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:20px;
+cursor:pointer;
+z-index:10;
+}
+
 </style>
 </head>
 
@@ -116,12 +137,21 @@ margin-bottom:20px;
 
 <div class="stars"></div>
 
+<!-- Intro Screen -->
+
 <div id="intro">
+
 <div class="castle">🏰</div>
+
 <h2>Welcome Akshuu ✨</h2>
+
 <p>A tiny magical world is waiting for you...</p>
+
 <button onclick="startJourney()">Open The Gates</button>
+
 </div>
+
+<!-- Main Card -->
 
 <div class="container" style="display:none">
 
@@ -138,22 +168,32 @@ margin-bottom:20px;
 
 </div>
 
+<button id="musicBtn" onclick="toggleMusic()">🔊 Music</button>
+
+<!-- Music -->
+
 <audio id="music" loop>
 <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c4e0b41d5.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
+/* Start Journey */
+
 function startJourney(){
 
 document.getElementById("intro").style.display="none";
 document.querySelector(".container").style.display="block";
 
-document.getElementById("music").play();
+const music=document.getElementById("music");
+music.volume=0.4;
+music.play().catch(()=>{});
 
 nextScene();
 
 }
+
+/* Story Scenes */
 
 let scene=0;
 
@@ -163,7 +203,7 @@ const scenes=[
 
 "Do you ever think about him when you're sad or alone?",
 
-"When something good happens… do you ever want to tell him first?",
+"When something really good happens… do you ever want to tell him first?",
 
 "Are you scared that saying what you feel might ruin the friendship?",
 
@@ -183,13 +223,16 @@ const scenes=[
 
 ];
 
+/* Typewriter effect */
+
 function typeWriter(text){
 
 let i=0;
 let speed=35;
 let output="";
 
-textArea=document.getElementById("text");
+let textArea=document.getElementById("text");
+
 textArea.innerHTML="";
 
 function typing(){
@@ -209,6 +252,8 @@ typing();
 
 }
 
+/* Next Scene */
+
 function nextScene(){
 
 if(scene<scenes.length){
@@ -225,11 +270,14 @@ document.getElementById("title").innerText="Final Question 💌";
 typeWriter("Akshuu… will you allow Duggu to call you his permanent person?");
 
 document.getElementById("nextBtn").style.display="none";
+
 document.getElementById("choices").style.display="block";
 
 }
 
 }
+
+/* Escaping No button */
 
 function moveButton(){
 
@@ -244,15 +292,21 @@ btn.innerText=["Nice try 😜","No escape 👀","Destiny says yes 😏"][Math.fl
 
 }
 
+/* Yes celebration */
+
 function yesClicked(){
 
 document.querySelector(".container").innerHTML=
+
 "<h1>💖 YOU JUST MADE DUGGU THE HAPPIEST HUMAN 💖</h1>"+
+
 "<p>This is the beginning of our little fairytale ✨</p>";
 
 launchHearts();
 
 }
+
+/* Heart explosion */
 
 function launchHearts(){
 
@@ -265,11 +319,34 @@ spark.className="spark";
 spark.innerText="💖";
 
 spark.style.left=Math.random()*100+"%";
+
 spark.style.bottom="0px";
 
 document.body.appendChild(spark);
 
 setTimeout(()=>spark.remove(),5000);
+
+}
+
+}
+
+/* Music toggle */
+
+function toggleMusic(){
+
+const music=document.getElementById("music");
+
+if(music.paused){
+
+music.play();
+document.getElementById("musicBtn").innerText="🔊 Music";
+
+}
+
+else{
+
+music.pause();
+document.getElementById("musicBtn").innerText="🔇 Music";
 
 }
 
