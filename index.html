@@ -9,62 +9,77 @@
 
 body{
 margin:0;
-font-family:'Segoe UI',sans-serif;
-background:#0c0f2c;
+font-family:Segoe UI, sans-serif;
+background:radial-gradient(circle at bottom,#020111 0%,#000814 100%);
 height:100vh;
+overflow:hidden;
 display:flex;
 align-items:center;
 justify-content:center;
-overflow:hidden;
 color:white;
 }
 
+/* STAR FIELD */
+
 .stars{
-position:absolute;
+position:fixed;
 width:100%;
 height:100%;
-background-image:radial-gradient(white 1px, transparent 1px);
-background-size:40px 40px;
-opacity:0.4;
-animation:moveStars 60s linear infinite;
+top:0;
+left:0;
+overflow:hidden;
+z-index:0;
 }
 
-@keyframes moveStars{
-from{transform:translateY(0)}
-to{transform:translateY(-200px)}
+.star{
+position:absolute;
+background:white;
+border-radius:50%;
+animation:twinkle 4s infinite ease-in-out;
 }
+
+@keyframes twinkle{
+0%{opacity:.3}
+50%{opacity:1}
+100%{opacity:.3}
+}
+
+/* QUESTION CARD */
 
 .container{
-max-width:700px;
-background:rgba(255,255,255,0.95);
-color:black;
-padding:40px;
-border-radius:25px;
-box-shadow:0 25px 70px rgba(0,0,0,0.4);
-text-align:center;
+position:relative;
 z-index:2;
+max-width:650px;
+background:rgba(255,255,255,.95);
+color:#111;
+padding:40px;
+border-radius:20px;
+box-shadow:0 20px 60px rgba(0,0,0,.6);
+text-align:center;
 }
 
 h1{
-color:#ff4d9a;
+color:#ff3f8e;
 }
 
 p{
-font-size:19px;
+font-size:18px;
 line-height:1.6;
 min-height:90px;
 }
 
+/* BUTTONS */
+
 button{
-padding:12px 28px;
+padding:12px 26px;
 border:none;
 border-radius:30px;
-background:#ff4d9a;
+background:#ff3f8e;
 color:white;
 font-size:16px;
 cursor:pointer;
 margin:10px;
-transition:0.25s;
+transition:.3s;
 }
 
 button:hover{
@@ -75,29 +90,31 @@ transform:scale(1.1);
 position:relative;
 }
 
-.spark{
+/* HEARTS */
+
+.heart{
 position:absolute;
-font-size:22px;
+font-size:24px;
 animation:floatUp 5s linear forwards;
 }
 
 @keyframes floatUp{
 0%{transform:translateY(0);opacity:1}
-100%{transform:translateY(-700px);opacity:0}
+100%{transform:translateY(-600px);opacity:0}
 }
+
+/* INTRO */
 
 #intro{
 position:absolute;
-top:0;
-left:0;
 width:100%;
 height:100%;
-background:#0c0f2c;
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
-flex-direction:column;
-z-index:5;
+z-index:3;
+text-align:center;
 }
 
 .castle{
@@ -110,7 +127,7 @@ margin-bottom:20px;
 
 <body>
 
-<div class="stars"></div>
+<div class="stars" id="stars"></div>
 
 <div id="intro">
 
@@ -118,7 +135,7 @@ margin-bottom:20px;
 
 <h2>Welcome Akshuu ✨</h2>
 
-<p>A tiny magical world is waiting for you...</p>
+<p>I made something small for you.</p>
 
 <button onclick="startJourney()">Open The Gates</button>
 
@@ -126,7 +143,7 @@ margin-bottom:20px;
 
 <div class="container" style="display:none">
 
-<h1 id="title">Akshuu ✨</h1>
+<h1 id="title">Akshuu</h1>
 
 <p id="text"></p>
 
@@ -143,106 +160,122 @@ margin-bottom:20px;
 <source src="Background.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="questionMusic">
-<source src="Say Yes.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="yesMusic">
-<source src="After Yes.mp3" type="audio/mpeg">
-</audio>
-
 <script>
 
+/* CREATE RANDOM STARS */
+
+const starContainer=document.getElementById("stars");
+
+for(let i=0;i<120;i++){
+
+let star=document.createElement("div");
+
+star.className="star";
+
+let size=Math.random()*3+1;
+
+star.style.width=size+"px";
+star.style.height=size+"px";
+
+star.style.top=Math.random()*100+"%";
+star.style.left=Math.random()*100+"%";
+
+star.style.animationDelay=Math.random()*5+"s";
+
+starContainer.appendChild(star);
+
+}
+
+/* MUSIC */
+
 const bgMusic=document.getElementById("bgMusic");
-const questionMusic=document.getElementById("questionMusic");
-const yesMusic=document.getElementById("yesMusic");
+
+/* START */
 
 function startJourney(){
 
 document.getElementById("intro").style.display="none";
+
 document.querySelector(".container").style.display="block";
 
-bgMusic.volume=0.35;
+bgMusic.volume=.35;
 bgMusic.play().catch(()=>{});
 
 nextScene();
 
 }
 
+/* STORY */
+
 let scene=0;
 
 const scenes=[
 
-"Before this little journey ends… Duggu wants to ask you something.",
+"Akshuu… tell me honestly. Do you ever think about me when you're feeling sad or a little alone?",
 
-"Do you ever think about him when you're sad or alone?",
+"When something really good happens… do you ever feel like telling me first?",
 
-"When something really good happens… do you ever want to tell him first?",
+"And sometimes… are you scared that if you say what you truly feel, it might change the friendship we already have?",
 
-"Are you scared that saying what you feel might ruin the friendship?",
+"Because honestly… I feel that fear too.",
 
-"Because feelings are confusing… and hearts are stubborn.",
+"Feelings can be confusing, and our friendship is something I truly value.",
 
-"Akshuu… it took a lot of courage for me to say this.",
+"I don't know if it is too soon, or maybe I've already delayed saying this… but sometimes I feel like you are more than just a friend to me.",
 
-"I wasn't ready yet… but I felt I might regret it if I stayed silent.",
+"And honestly, I would love to have you as more than just a friend.",
 
-"You are not just a friend to me.",
+"But before anything else, it is very important for me to know what you feel.",
 
-"You are way more than that.",
-
-"I really like you… but I am scared of losing you.",
-
-"So I just want to ask honestly."
+"Do you also feel the same for me… or is it just me?"
 
 ];
+
+/* TYPEWRITER */
 
 function typeWriter(text){
 
 let i=0;
-let speed=35;
-let output="";
 
-let textArea=document.getElementById("text");
+let area=document.getElementById("text");
 
-textArea.innerHTML="";
+area.innerHTML="";
 
-function typing(){
+function type(){
 
 if(i<text.length){
 
-output+=text.charAt(i);
-textArea.innerHTML=output;
+area.innerHTML+=text.charAt(i);
+
 i++;
-setTimeout(typing,speed);
+
+setTimeout(type,35);
 
 }
 
 }
 
-typing();
+type();
 
 }
+
+/* NEXT */
 
 function nextScene(){
 
 if(scene<scenes.length){
 
 typeWriter(scenes[scene]);
+
 scene++;
 
 }
 
 else{
 
-bgMusic.pause();
+document.getElementById("title").innerText="Final Question";
 
-questionMusic.volume=0.6;
-questionMusic.play();
-
-document.getElementById("title").innerText="Final Question 💌";
-
-typeWriter("Akshuu… will you allow Duggu to call you his permanent person?");
+typeWriter("Akshuu… would you like to be more than just friends with me?");
 
 document.getElementById("nextBtn").style.display="none";
 
@@ -252,53 +285,43 @@ document.getElementById("choices").style.display="block";
 
 }
 
+/* ESCAPING BUTTON */
+
 function moveButton(){
 
 let btn=document.getElementById("noBtn");
 
-let x=Math.random()*350-150;
+let x=Math.random()*300-150;
+
 let y=Math.random()*200-100;
 
 btn.style.transform=`translate(${x}px,${y}px)`;
 
-btn.innerText=["Nice try 😜","No escape 👀","Destiny says yes 😏"][Math.floor(Math.random()*3)];
-
 }
+
+/* YES CLICK */
 
 function yesClicked(){
 
-questionMusic.pause();
-
-yesMusic.volume=0.7;
-yesMusic.play();
-
 document.querySelector(".container").innerHTML=
 
-"<h1>💖 YOU JUST MADE DUGGU THE HAPPIEST HUMAN 💖</h1>"+
+"<h1>💖 You just made Duggu the happiest human 💖</h1><p>Maybe this is where our little story begins ✨</p>";
 
-"<p>This is the beginning of our little fairytale ✨</p>";
+for(let i=0;i<70;i++){
 
-launchHearts();
+let heart=document.createElement("div");
 
-}
+heart.className="heart";
 
-function launchHearts(){
+heart.innerText="💖";
 
-for(let i=0;i<80;i++){
+heart.style.left=Math.random()*100+"%";
 
-let spark=document.createElement("div");
+heart.style.bottom="0px";
 
-spark.className="spark";
+document.body.appendChild(heart);
 
-spark.innerText="💖";
-
-spark.style.left=Math.random()*100+"%";
-
-spark.style.bottom="0px";
-
-document.body.appendChild(spark);
-
-setTimeout(()=>spark.remove(),5000);
+setTimeout(()=>heart.remove(),5000);
 
 }
 
