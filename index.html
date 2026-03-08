@@ -1,60 +1,64 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Magical Tour for Akshuu</title>
+<title>Duggu's Magical Journey</title>
 
 <style>
+
 body{
 margin:0;
-font-family: 'Segoe UI', sans-serif;
-background: linear-gradient(135deg,#ff9ecf,#ffd6f0,#ffe6f7);
+font-family:'Segoe UI',sans-serif;
+background:#0c0f2c;
 height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
 overflow:hidden;
+color:white;
 }
+
+/* Stars */
 
 .stars{
 position:absolute;
 width:100%;
 height:100%;
-background-image: radial-gradient(white 1px, transparent 1px);
+background-image:radial-gradient(white 1px, transparent 1px);
 background-size:40px 40px;
-opacity:0.3;
-animation: twinkle 6s infinite linear;
+opacity:0.4;
+animation:moveStars 60s linear infinite;
 }
 
-@keyframes twinkle{
+@keyframes moveStars{
 from{transform:translateY(0)}
-to{transform:translateY(-40px)}
+to{transform:translateY(-200px)}
 }
 
 .container{
-max-width:600px;
-background:white;
+max-width:700px;
+background:rgba(255,255,255,0.95);
+color:black;
 padding:40px;
 border-radius:25px;
-box-shadow:0 20px 60px rgba(0,0,0,0.25);
+box-shadow:0 25px 70px rgba(0,0,0,0.4);
 text-align:center;
 z-index:2;
 }
 
 h1{
 color:#ff4d9a;
-margin-bottom:10px;
 }
 
 p{
-font-size:18px;
+font-size:19px;
 line-height:1.6;
+min-height:90px;
 }
 
 button{
-padding:12px 26px;
+padding:12px 28px;
 border:none;
 border-radius:30px;
 background:#ff4d9a;
@@ -73,15 +77,36 @@ transform:scale(1.1);
 position:relative;
 }
 
-.hearts{
+.spark{
 position:absolute;
-font-size:20px;
-animation: floatUp 4s linear forwards;
+font-size:22px;
+animation:floatUp 5s linear forwards;
 }
 
 @keyframes floatUp{
 0%{transform:translateY(0);opacity:1}
-100%{transform:translateY(-600px);opacity:0}
+100%{transform:translateY(-700px);opacity:0}
+}
+
+/* Castle Gate */
+
+#intro{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#0c0f2c;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:5;
+}
+
+.castle{
+font-size:60px;
+margin-bottom:20px;
 }
 
 </style>
@@ -91,15 +116,20 @@ animation: floatUp 4s linear forwards;
 
 <div class="stars"></div>
 
-<div class="container">
+<div id="intro">
+<div class="castle">🏰</div>
+<h2>Welcome Akshuu ✨</h2>
+<p>A tiny magical world is waiting for you...</p>
+<button onclick="startJourney()">Open The Gates</button>
+</div>
 
-<h1 id="title">Welcome Akshuu ✨</h1>
+<div class="container" style="display:none">
 
-<p id="text">
-A tiny magical kingdom has been waiting for you. A princess guide wants to show you something special today.
-</p>
+<h1 id="title">Akshuu ✨</h1>
 
-<button id="nextBtn" onclick="nextScene()">Start the Magical Tour</button>
+<p id="text"></p>
+
+<button id="nextBtn" onclick="nextScene()">Next</button>
 
 <div id="choices" style="display:none">
 <button onclick="yesClicked()">Yes 💖</button>
@@ -108,75 +138,138 @@ A tiny magical kingdom has been waiting for you. A princess guide wants to show 
 
 </div>
 
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c4e0b41d5.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+
+function startJourney(){
+
+document.getElementById("intro").style.display="none";
+document.querySelector(".container").style.display="block";
+
+document.getElementById("music").play();
+
+nextScene();
+
+}
 
 let scene=0;
 
+const scenes=[
+
+"Before this little journey ends… Duggu wants to ask you something.",
+
+"Do you ever think about him when you're sad or alone?",
+
+"When something good happens… do you ever want to tell him first?",
+
+"Are you scared that saying what you feel might ruin the friendship?",
+
+"Because feelings are confusing… and hearts are stubborn.",
+
+"Akshuu… it took a lot of courage for me to say this.",
+
+"I wasn't ready yet… but I felt I might regret it if I stayed silent.",
+
+"You are not just a friend to me.",
+
+"You are way more than that.",
+
+"I really like you… but I am scared of losing you.",
+
+"So I just want to ask honestly."
+
+];
+
+function typeWriter(text){
+
+let i=0;
+let speed=35;
+let output="";
+
+textArea=document.getElementById("text");
+textArea.innerHTML="";
+
+function typing(){
+
+if(i<text.length){
+
+output+=text.charAt(i);
+textArea.innerHTML=output;
+i++;
+setTimeout(typing,speed);
+
+}
+
+}
+
+typing();
+
+}
+
 function nextScene(){
 
+if(scene<scenes.length){
+
+typeWriter(scenes[scene]);
 scene++;
 
-if(scene==1){
-title.innerText="The Castle Garden 🌸";
-text.innerText="Every fairy tale begins with someone kind… someone who secretly cares a lot.";
 }
 
-else if(scene==2){
-title.innerText="The Magic River ✨";
-text.innerText="Sometimes that person hopes you will notice how special you are to them.";
-}
+else{
 
-else if(scene==3){
-title.innerText="The Star Bridge 🌙";
-text.innerText="And sometimes… that person is a slightly silly guy named Duggu who made this tiny magical website just for you.";
-}
+document.getElementById("title").innerText="Final Question 💌";
 
-else if(scene==4){
-title.innerText="Final Question 💌";
-text.innerText="So Akshuu… after this magical journey, there is only one important question.";
-nextBtn.style.display="none";
-choices.style.display="block";
-}
+typeWriter("Akshuu… will you allow Duggu to call you his permanent person?");
+
+document.getElementById("nextBtn").style.display="none";
+document.getElementById("choices").style.display="block";
 
 }
 
-function yesClicked(){
-
-document.querySelector(".container").innerHTML=
-"<h1>YAYYY AKSHUU 💖</h1>"+
-"<p>You just made Duggu the happiest human alive 😭✨</p>"+
-"<p>This fairytale officially begins now.</p>";
-
-launchHearts();
 }
 
 function moveButton(){
 
 let btn=document.getElementById("noBtn");
 
-let x=Math.random()*300-150;
+let x=Math.random()*350-150;
 let y=Math.random()*200-100;
 
 btn.style.transform=`translate(${x}px,${y}px)`;
+
+btn.innerText=["Nice try 😜","No escape 👀","Destiny says yes 😏"][Math.floor(Math.random()*3)];
+
+}
+
+function yesClicked(){
+
+document.querySelector(".container").innerHTML=
+"<h1>💖 YOU JUST MADE DUGGU THE HAPPIEST HUMAN 💖</h1>"+
+"<p>This is the beginning of our little fairytale ✨</p>";
+
+launchHearts();
 
 }
 
 function launchHearts(){
 
-for(let i=0;i<40;i++){
+for(let i=0;i<70;i++){
 
-let heart=document.createElement("div");
+let spark=document.createElement("div");
 
-heart.className="hearts";
-heart.innerText="💖";
+spark.className="spark";
 
-heart.style.left=Math.random()*100+"%";
-heart.style.bottom="0px";
-heart.style.fontSize=(20+Math.random()*20)+"px";
+spark.innerText="💖";
 
-document.body.appendChild(heart);
+spark.style.left=Math.random()*100+"%";
+spark.style.bottom="0px";
 
-setTimeout(()=>heart.remove(),4000);
+document.body.appendChild(spark);
+
+setTimeout(()=>spark.remove(),5000);
 
 }
 
