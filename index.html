@@ -22,7 +22,7 @@ align-items:center;
 justify-content:center;
 }
 
-/* STAR FIELD */
+/* STARS */
 
 .stars{
 position:fixed;
@@ -222,7 +222,6 @@ const scenes=[
 function typeWriter(text){
 
 let i=0;
-
 let area=document.getElementById("text");
 
 area.innerHTML="";
@@ -232,9 +231,7 @@ function typing(){
 if(i<text.length){
 
 area.innerHTML+=text.charAt(i);
-
 i++;
-
 setTimeout(typing,35);
 
 }
@@ -248,8 +245,6 @@ typing();
 /* NEXT */
 
 function nextScene(){
-
-/* start music after first click */
 
 if(!musicStarted){
 
@@ -281,7 +276,9 @@ function yesClicked(){
 
 document.querySelector(".container").innerHTML=
 
-"<h1>💖 You just made Duggu the happiest human 💖</h1><p>Maybe this is where our little story begins ✨</p>";
+"<h1>Whatt!! Sach me! 🥹</h1>" +
+"<p>I can't believe you also feel the same ❤️</p>" +
+"<p>Call karo mujhe please 😭😭</p>";
 
 startHeartRain();
 
